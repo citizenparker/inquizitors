@@ -3,6 +3,10 @@ body {
   padding-bottom: 40px;
 }
 
+textarea, body, p, .navbar-search .search-query {
+  font-family: 'Anonymous Pro', sans-serif;
+}
+
 .sidebar-nav {
   padding: 9px 0;
 }
