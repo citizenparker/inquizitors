@@ -1,5 +1,6 @@
 (ns inquizitors.core
-  (:use lamina.core aleph.http))
+  (:use lamina.core aleph.http)
+  (:require [ring.middleware.resource :as resource]))
 
 (def broadcast-channel (channel))
 
@@ -11,3 +12,13 @@
       (siphon broadcast-channel ch))
     (fn [name]
       (on-closed ch (fn [] (println (str name " disconnected")))))))
+
+(defn default-handler [request]
+  {:status 404
+   :headers {"content-type" "text/plain"}
+   :body "Not found"})
+
+(def static-files
+  (-> default-handler
+    (resource/wrap-resource "public")
+    wrap-ring-handler))
