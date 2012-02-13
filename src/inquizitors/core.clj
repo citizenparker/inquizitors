@@ -1,6 +1,7 @@
 (ns inquizitors.core
   (:use lamina.core aleph.http)
-  (:require [ring.middleware.resource :as resource]))
+  (:require [ring.middleware.resource :as resource]
+            [ring.middleware.file-info :as file-info]))
 
 (def broadcast-channel (channel))
 
@@ -21,4 +22,5 @@
 (def static-files
   (-> default-handler
     (resource/wrap-resource "public")
+    (file-info/wrap-file-info)
     wrap-ring-handler))
