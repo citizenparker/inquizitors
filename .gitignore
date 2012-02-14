@@ -2,5 +2,8 @@ pom.xml
 *jar
 /lib/
 /classes/
+/.clojurescript-output/
+/resources/public/js/
 .lein-failures
 .lein-deps-sum
+/.lein-plugins/
