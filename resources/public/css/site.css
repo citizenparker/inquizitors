@@ -10,3 +10,11 @@ textarea, body, p, .navbar-search .search-query {
 .sidebar-nav {
   padding: 9px 0;
 }
+
+#log {
+  height: 172px;
+  background-color: #fff;
+  border:  1px solid #ccc;
+  overflow-y: scroll;
+  margin: 10px;
+}
