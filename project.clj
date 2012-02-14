@@ -2,6 +2,7 @@
   :description "This is a thing"
   :dependencies [[org.clojure/clojure "1.3.0"]
                  [aleph "0.2.1-alpha2-SNAPSHOT"]
+                 [domina "1.0.0-alpha1"]
                  [ring "1.0.2"]]
   :plugins [[lein-cljsbuild "0.0.13"]]
   :cljsbuild {
