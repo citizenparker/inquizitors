@@ -3,7 +3,6 @@
             [inquizitors.sockets :as sockets]))
 
 (defn receive-message [msg]
-  (.log js/console msg)
   (dom/append-to-log msg)
   (dom/clear-user-input))
 
