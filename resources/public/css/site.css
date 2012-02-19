@@ -17,4 +17,5 @@ textarea, body, p, .navbar-search .search-query {
   border:  1px solid #ccc;
   overflow-y: scroll;
   margin: 10px;
+  margin-left: 0px;
 }

@@ -2,7 +2,8 @@
 
 (def web-socket (or (.-WebSocket js/window) (.-MozWebSocket js/window)))
 
-(defn create-socket []
+(defn create-socket [f]
   (let [ws (new web-socket "ws://localhost:8080")]
-    (set! (.-onmessage ws) (fn [e] (.log js/console (str "Server: " (.-data e)))))
-    (set! (.-onopen ws) (fn [e] (.send ws "sparker") (.send ws "Hello")))))
+    (set! (.-onmessage ws) (fn [e] (f (.-data e))))
+    ws
+    ))
