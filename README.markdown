@@ -1,10 +1,16 @@
 # inquizitors
 
-This is a in-browser MUD based on trivia. It's mostly a place for me to play around with programming ideas while keeping myself amused.
+This is a in-browser MUD based on trivia. It's mostly a place for me to play around with Clojure and ClojureScript while keeping myself amused.
 
 ## Usage
 
-Right now, you don't.
+There's not much to see just yet, but do the following:
+
+```
+lein deps
+lein run
+open http://localhost:8888/index.html
+```
 
 ## License
 
