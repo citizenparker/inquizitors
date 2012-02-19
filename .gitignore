@@ -6,4 +6,5 @@ pom.xml
 /resources/public/js/
 .lein-failures
 .lein-deps-sum
+.repl
 /.lein-plugins/
