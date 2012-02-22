@@ -1,23 +1,33 @@
 (ns inquizitors.terminal
-  (:require [clojure.string :as string]))
+  (:require [clojure.string :as string]
+            [inquizitors.dom :as dom]))
 
 (def canvas  (.getElementById js/document "terminal"))
 (def context (.getContext canvas "2d"))
 
-(defn set-fill [color]
-  (set! (.-fillStyle context) (str "rgb(" (string/join "," color) ")")))
+(defn set-fill [& rgba]
+  (set! (.-fillStyle context) (str "rgb(" (string/join "," rgba) ")")))
 
-(defn rect [dimensions]
-  (apply #(.fillRect context %1 %2 %3 %4) dimensions))
+(defn init-context []
+  (set-fill 0 0 0)
+  (clear 0 0 (.-width canvas) (.-height canvas))
+  (.save context))
 
-(defn clear []
-  (set-fill [0 0 0])
-  (rect [0 0 150 150]))
+(dom/on-ready init-context)
+
+(defn rect [x y width height]
+  (.fillRect context x y width height))
+
+(defn clear
+  ([] (.restore context))
+  ([x y width height]
+    (set-fill 0 0 0)
+    (rect x y width height)))
 
 (defn text [msg x y]
   (set! (.-font context) " 20px 'Anonymous Pro', 'Andale Mono', monospace")
   (set! (.-textBaseline context) "top")
-  (set-fill [90 90 90])
+  (set-fill 90 90 90)
   (.fillText context msg x y))
 
 ; so, some lessons learned.
