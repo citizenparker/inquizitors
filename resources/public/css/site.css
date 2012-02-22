@@ -4,7 +4,7 @@ body {
 }
 
 textarea, body, p, .navbar-search .search-query {
-  font-family: 'Anonymous Pro', sans-serif;
+  font-family: 'Anonymous Pro', 'Andale Mono', monospace;
 }
 
 .sidebar-nav {
