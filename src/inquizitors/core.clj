@@ -3,16 +3,16 @@
   (:require [ring.middleware.resource :as resource]
             [ring.middleware.file-info :as file-info]))
 
-(def broadcast-channel (channel))
+(def broadcast-channel (permanent-channel))
 
 (defn chat-handler [ch handshake]
   (receive ch
     (fn [name]
       (println (str name " connected"))
-      (siphon (map* #(str name ": " %) ch) broadcast-channel)
+      (on-closed ch (fn [] (println (str name " disconnected"))))
+      (siphon (map* #(do (println (str name ": " %)) (str name ": " %)) ch) broadcast-channel)
       (siphon broadcast-channel ch))
-    (fn [name]
-      (on-closed ch (fn [] (println (str name " disconnected")))))))
+    ))
 
 (defn default-handler [request]
   {:status 404

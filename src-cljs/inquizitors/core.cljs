@@ -9,6 +9,7 @@
 (def server (sockets/create-socket receive-message))
 
 (defn send-message [msg]
+  (dom/append-to-log (str "SENDING " msg))
   (.send server msg))
 
 (dom/on-user-input (fn [e] (send-message e)))
