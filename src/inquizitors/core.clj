@@ -8,11 +8,11 @@
 (defn chat-handler [ch handshake]
   (receive ch
     (fn [name]
-      (println (str name " connected"))
-      (on-closed ch (fn [] (println (str name " disconnected"))))
-      (siphon (map* #(do (println (str name ": " %)) (str name ": " %)) ch) broadcast-channel)
-      (siphon broadcast-channel ch))
-    ))
+      (when name ; some WS clients seem to send null strings on browser close
+        (println (str name " connected"))
+        (on-closed ch (fn [] (println (str name " disconnected"))))
+        (siphon (map* #(do (println (str name ": " %)) (str name ": " %)) ch) broadcast-channel)
+        (siphon broadcast-channel ch)))))
 
 (defn default-handler [request]
   {:status 404

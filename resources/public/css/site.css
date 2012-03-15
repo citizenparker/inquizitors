@@ -11,6 +11,13 @@ textarea, body, p, .navbar-search .search-query {
   padding: 9px 0;
 }
 
+.hero-unit {
+
+  display: inline-block;
+  margin: auto;
+  padding: 10px;
+}
+
 #log {
   height: 172px;
   background-color: #fff;
