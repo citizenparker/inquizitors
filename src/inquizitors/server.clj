@@ -1,6 +1,9 @@
 (ns inquizitors.server
-  (:use inquizitors.core aleph.http))
+  (:use aleph.http)
+  (:require [inquizitors.sockets :as sockets]
+            [inquizitors.chat :as chat]
+            [inquizitors.static :as static]))
 
 (defn -main []
-  (start-http-server chat-handler {:port 8080 :websocket true})
-  (start-http-server static-files {:port 8888} ))
+  (start-http-server sockets/connection-router {:port 8080 :websocket true})
+  (start-http-server static/static-file-server {:port 8888} ))
