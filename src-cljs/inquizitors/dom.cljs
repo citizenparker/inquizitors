@@ -10,6 +10,14 @@
       (fn [e] (.preventDefault e)
               (f (user-input))))))
 
+(defn on-keypress [f]
+  (-> ($ :#terminal)
+    (.keydown
+      (fn [e]
+        (when (f (.-keyCode e))
+          (.preventDefault e)
+          )))))
+
 (defn clear-user-input [f]
   (-> ($ :#message)
     (.val "")))

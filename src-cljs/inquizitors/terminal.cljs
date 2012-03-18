@@ -4,14 +4,16 @@
 
 (def canvas  (.getElementById js/document "terminal"))
 (def context (.getContext canvas "2d"))
+(def width (.-width canvas))
+(def height (.-height canvas))
+(def x-scale 10)
+(def y-scale 18)
 
 (defn set-fill [& rgba]
   (set! (.-fillStyle context) (str "rgb(" (string/join "," rgba) ")")))
 
 (defn init-context []
-  (set-fill 0 0 0)
-  (clear 0 0 (.-width canvas) (.-height canvas))
-  (.save context))
+  (clear))
 
 (dom/on-ready init-context)
 
@@ -19,7 +21,7 @@
   (.fillRect context x y width height))
 
 (defn clear
-  ([] (.restore context))
+  ([] (clear 0 0 width height))
   ([x y width height]
     (set-fill 0 0 0)
     (rect x y width height)))
@@ -30,12 +32,8 @@
   (set-fill 130 130 130)
   (.fillText context msg x y))
 
-(def x-scale 10)
-(def y-scale 18)
-
 (defn draw-glyph [character x y]
   (let [x-actual (* x-scale x)
         y-actual (* y-scale y)]
-    (println (str x-actual ":" y-actual))
     (clear x-actual y-actual x-scale y-scale)
     (text character x-actual y-actual)))
