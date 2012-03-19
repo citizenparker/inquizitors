@@ -1,8 +1,10 @@
 (ns inquizitors.server
   (:use aleph.http)
   (:require [inquizitors.sockets :as sockets]
-            [inquizitors.chat :as chat]
-            [inquizitors.static :as static]))
+            [inquizitors.static :as static]
+            [inquizitors.chat]
+            [inquizitors.movement]
+            ))
 
 (defn -main []
   (start-http-server sockets/connection-router {:port 8080 :websocket true})

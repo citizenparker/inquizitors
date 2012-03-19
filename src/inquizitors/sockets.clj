@@ -3,13 +3,17 @@
 
 (def broadcast-channel (permanent-channel))
 
-(defn broadcast [message] (enqueue broadcast-channel message))
+(defn broadcast [identifier message]
+  (let [serialized-message (pr-str {:identifier identifier :payload message})]
+    (println (str "OUTBOUND: " serialized-message))
+    (enqueue broadcast-channel serialized-message)))
 
 (defmulti respond-to :identifier)
 
 (defn responder-fn-for [name]
   (fn [msg-str]
     (when msg-str
+      (println (str "INBOUND: " msg-str))
       (let [msg (read-string msg-str)]
         (respond-to (assoc msg :name name))))))
 

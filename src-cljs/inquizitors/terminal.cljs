@@ -35,5 +35,4 @@
 (defn draw-glyph [character x y]
   (let [x-actual (* x-scale x)
         y-actual (* y-scale y)]
-    (clear x-actual y-actual x-scale y-scale)
     (text character x-actual y-actual)))

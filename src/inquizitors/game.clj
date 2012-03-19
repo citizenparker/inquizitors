@@ -2,8 +2,7 @@
 
 (def world-x 4)
 (def world-y 3)
-(def world (agent [:# :# :# :# :# :# :# :# :d :# :# :#]))
-(def outer-world world)
+(def world (agent (vec "#####d######")))
 (def directions {:n (- world-x) :w -1 :s world-x :e 1})
 
 (defn inspect-world [world]
@@ -16,7 +15,7 @@
     (<= 0 x-old (dec (count world)))
     (<= 0 x-new (dec (count world)))
     (if (#{:e :w} direction)
-      (= (/ x-old world-x) (/ x-new world-x))
+      (= (int (/ x-old world-x)) (int (/ x-new world-x)))
       true)))
 
 ; there must be a better way to do this, but I'm away from the clojure docs right now
