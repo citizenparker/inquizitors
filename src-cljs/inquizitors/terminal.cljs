@@ -29,7 +29,7 @@
 (defn text [msg x y]
   (set! (.-font context) " 20px 'Anonymous Pro', 'Andale Mono', monospace")
   (set! (.-textBaseline context) "top")
-  (set-fill 130 130 130)
+  (set-fill 180 180 180)
   (.fillText context msg x y))
 
 (defn draw-glyph [character x y]
