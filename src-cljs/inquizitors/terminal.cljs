@@ -1,6 +1,6 @@
 (ns inquizitors.terminal
   (:require [clojure.string :as string]
-            [inquizitors.dom :as dom]))
+            [inquizitors.gamestate :as gamestate]))
 
 (def canvas  (.getElementById js/document "terminal"))
 (def context (.getContext canvas "2d"))
@@ -12,10 +12,9 @@
 (defn set-fill [& rgba]
   (set! (.-fillStyle context) (str "rgb(" (string/join "," rgba) ")")))
 
-(defn init-context []
-  (clear))
-
-(dom/on-ready init-context)
+(defmethod gamestate/on-state-entered :initializing []
+  (clear)
+  (gamestate/signal-event :initialized))
 
 (defn rect [x y width height]
   (.fillRect context x y width height))
@@ -36,3 +35,8 @@
   (let [x-actual (* x-scale x)
         y-actual (* y-scale y)]
     (text character x-actual y-actual)))
+
+(defn draw-screen [all-characters x-boundary]
+  (clear)
+    (doseq [i (range 0 (count all-characters))]
+      (draw-glyph (nth all-characters i) (mod i x-boundary) (.floor js/Math (/ i x-boundary)))))

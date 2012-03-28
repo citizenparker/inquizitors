@@ -15,7 +15,7 @@ textarea, body, p, .navbar-search .search-query {
   display:block;
   margin: auto;
   padding: 10px;
-  width: 1010px;
+  width: 1000px;
 }
 
 #terminal {
@@ -34,6 +34,6 @@ textarea, body, p, .navbar-search .search-query {
 }
 
 #message {
-  width: 1000px;
+  width: 990px;
   margin: 0px;
 }

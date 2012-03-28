@@ -1,8 +1,8 @@
 (ns inquizitors.dom
   (:use [jayq.core :only [$]]))
 
-(defn on-ready [f]
-  (.ready ($ js/document) f))
+(defn on-load [f]
+  (.load ($ js/window) f))
 
 (defn on-user-input [f]
   (-> ($ :#chatbox)
@@ -11,7 +11,7 @@
               (f (user-input))))))
 
 (defn on-keypress [f]
-  (-> ($ :#terminal)
+  (-> ($ (.-body js/document))
     (.keydown
       (fn [e]
         (when (f (.-keyCode e))

@@ -6,9 +6,8 @@
 (def directions {:n (- world-x) :w -1 :s world-x :e 1})
 
 (defn inspect-world [world]
-  (doall
-    (for [x (partition world-x world)]
-      (println x))))
+  (doseq [x (partition world-x world)]
+    (println x)))
 
 (defn valid-move? [world direction x-old x-new]
   (and
