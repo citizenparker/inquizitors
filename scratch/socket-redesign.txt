@@ -1,0 +1,19 @@
+Problem - how to represent and manipulate players.
+
+"Players" have:
+  - a channel (used to send/receive messages for that player)
+  - a name (used to represent this person in chat)
+  - a symbol (used to represent this person in world)
+  - a color (used to represent this person in world)
+  - a position in the world
+
+Any solution must account for the following scenarios where a player...
+  - joins
+  - exits
+  - sends a chat to all players (the default)
+  - moves
+  - sends a private chat to another player
+  - answers a trivia question that is just for them
+
+Possible solutions
+  - shared array of players stored as maps
