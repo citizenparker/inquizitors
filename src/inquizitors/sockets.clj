@@ -6,4 +6,4 @@
   (receive ch
     (fn [message]
       (when message ; some WS clients seem to send null strings on browser close
-        (communication/add-player ch message)))))
+        (communication/add-new-connection ch message)))))
