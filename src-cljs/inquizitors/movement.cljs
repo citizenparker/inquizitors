@@ -1,8 +1,7 @@
 (ns inquizitors.movement
   (:require [inquizitors.dom :as dom]
             [inquizitors.sockets :as sockets]
-            [inquizitors.terminal :as terminal]
-            [inquizitors.gamestate :as gamestate]))
+            [inquizitors.terminal :as terminal]))
 
 (defmethod sockets/respond-to :map-update [msg]
   (let [world ((msg :payload) :world)
@@ -16,5 +15,7 @@
     (sockets/send :movement direction)
     true))
 
-(defmethod gamestate/on-state-entered :playing []
-  (dom/on-keypress process-keypress))
+(def event-scope "movement")
+
+(defn start-movement []
+  (dom/on-keypress process-keypress event-scope))

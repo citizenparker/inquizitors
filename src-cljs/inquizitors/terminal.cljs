@@ -1,6 +1,5 @@
 (ns inquizitors.terminal
-  (:require [clojure.string :as string]
-            [inquizitors.gamestate :as gamestate]))
+  (:require [clojure.string :as string]))
 
 (def canvas  (.getElementById js/document "terminal"))
 (def context (.getContext canvas "2d"))
@@ -11,10 +10,6 @@
 
 (defn set-fill [& rgba]
   (set! (.-fillStyle context) (str "rgb(" (string/join "," rgba) ")")))
-
-(defmethod gamestate/on-state-entered :initializing []
-  (clear)
-  (gamestate/signal-event :initialized))
 
 (defn rect [x y width height]
   (.fillRect context x y width height))

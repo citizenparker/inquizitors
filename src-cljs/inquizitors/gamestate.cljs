@@ -2,7 +2,7 @@
   (:require [inquizitors.dom :as dom]))
 
 (def transitions [{:event :started :to-state :initializing}
-                  {:event :initialized :to-state :registration}
+                  {:event :initialized :to-state :registering}
                   {:event :registered :to-state :playing}])
 
 (defmulti on-state-entered identity)

@@ -4,15 +4,15 @@
 (defn on-load [f]
   (.load ($ js/window) f))
 
-(defn on-user-input [f]
+(defn on-user-input [f scope]
   (-> ($ :#chatbox)
-    (.submit
+    (.on (str "submit." scope)
       (fn [e] (.preventDefault e)
               (f (user-input))))))
 
-(defn on-keypress [f]
+(defn on-keypress [f scope]
   (-> ($ (.-body js/document))
-    (.keydown
+    (.on (str "keydown." scope)
       (fn [e]
         (when (f (.-keyCode e))
           (.preventDefault e)
