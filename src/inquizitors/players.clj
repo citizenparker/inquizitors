@@ -4,13 +4,9 @@
 (def symbols [\@ \$ \% \a \b \c \d \e \f \g \h \j \k \l])
 (def colors [:blue :green :red :white])
 
-(defn- new-player [name]
-  {:name name :symbol (rand-nth symbols) :color (rand-nth colors)})
+(defn player [name]
+  {:name name :symbol (rand-nth symbols) :colors (rand-nth colors)})
 
-(defn- add-player* [all-players p]
-  (conj all-players p))
-
-(defn add-player [name]
-  (let [p (new-player name)]
-    (dosync (alter players add-player* p))
-    p))
+(defn add! [player]
+  (dosync
+    (alter players conj player)))

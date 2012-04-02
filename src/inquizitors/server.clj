@@ -1,11 +1,33 @@
 (ns inquizitors.server
-  (:use [aleph.http :only [start-http-server]])
-  (:require [inquizitors.sockets :as sockets]
-            [inquizitors.static :as static]
-            [inquizitors.chat]
-            [inquizitors.movement]
-            ))
+  (:require [aleph.http :as aleph]
+            [lamina.core :as lamina]
+            [ring.middleware.resource :as resource]
+            [ring.middleware.file-info :as file-info]
+            [inquizitors.communication :as communication]))
+
+(defn connection-router
+  "Receives new connections. Some browsers will send null messages on close, causing a seemingly needless guard clause"
+  [ch handshake]
+  (lamina/receive ch
+    (fn [message]
+      (when message
+        (communication/register! ch message)))))
+
+(defn default-handler [request]
+  {:status 404
+   :headers {"content-type" "text/plain"}
+   :body "Not found"})
+
+(def static-file-server
+  (-> default-handler
+      (resource/wrap-resource "public")
+      (file-info/wrap-file-info)
+      aleph/wrap-ring-handler))
 
 (defn -main []
-  (start-http-server (var sockets/connection-router) {:port 8080 :websocket true})
-  (start-http-server (var static/static-file-server) {:port 8888} ))
+  (aleph/start-http-server
+    (var connection-router)
+    {:port 8080 :websocket true})
+  (aleph/start-http-server
+    static-file-server
+    {:port 8888}))

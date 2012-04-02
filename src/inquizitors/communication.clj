@@ -1,14 +1,18 @@
 (ns inquizitors.communication
-  (:use [lamina.core :only [enqueue siphon receive-all permanent-channel on-closed]])
-  (:require [inquizitors.players :as players]))
+  (:require [lamina.core :as lamina]
+            [inquizitors.board :as board]
+            [inquizitors.players :as players]))
 
-(def broadcast-channel (permanent-channel))
-(def player-channels (ref {}))
+(def broadcast-channel (lamina/permanent-channel))
 
-(defn broadcast [identifier message]
+(defn broadcast
+  "Sends a message to all known players"
+  [identifier message]
   (let [serialized-message (pr-str {:identifier identifier :payload message})]
     (println (str "OUTBOUND: " serialized-message))
-    (enqueue broadcast-channel serialized-message)))
+    (lamina/enqueue broadcast-channel serialized-message)))
+
+(def player-channels (ref {}))
 
 (defn add-channel [pchannels ch player]
   (assoc pchannels player ch))
@@ -16,10 +20,17 @@
 (defn send-to-player [player identifier message]
   (let [serialized-message (pr-str {:identifier identifier :payload message})
         ch (player-channels player)]
-    (println (str "OUTBOUND (" (player :name) "): " serialized-message))
-    (enqueue ch serialized-message)))
+    (println (str "OUTBOUND (" (:name player) "): " serialized-message))
+    (lamina/enqueue ch serialized-message)))
 
-(defmulti respond-to :identifier)
+(defn board-changed [new-board]
+  (broadcast :map-update {:world new-board :world-x board/board-x}))
+
+(defn respond-to [msg]
+  (if (= :chat (msg :identifier))
+    (broadcast :chat
+               (str (msg :name) ": " (msg :payload)))
+    (board/move \d (msg :payload) board-changed)))
 
 (defn responder-for-player [p]
   (fn [msg-str]
@@ -28,11 +39,16 @@
       (let [msg (read-string msg-str)]
         (respond-to (assoc msg :player p))))))
 
-(defn add-new-connection [ch msg-str]
-  (siphon broadcast-channel ch)
+(defn register!
+  "Create a player for the new connection and wire it up appropriately"
+  [ch msg-str]
+  (lamina/siphon broadcast-channel ch)
   (println msg-str)
   (let [msg (read-string msg-str)
-        player (players/add-player (msg :payload))]
-    (dosync (alter player-channels add-channel ch player))
-    (receive-all ch (responder-for-player player))
+        name (msg :payload)
+        player (players/player name)]
+    (dosync
+      (players/add! player)
+      (alter player-channels assoc player ch))
+    (lamina/receive-all ch (responder-for-player player))
     (send-to-player player :registered player)))
