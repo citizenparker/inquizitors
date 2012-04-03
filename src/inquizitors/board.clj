@@ -2,7 +2,7 @@
   (:require [clojure.string :as string]))
 
 (def board-x 100)
-(def board (ref (vec (map (fn [x] {:tile x :item nil})
+(def board (agent (vec (map (fn [x] {:tile x :item nil})
                    (string/replace
                      (slurp "resources/boards/600w-3.board")
                      #"\n" "")))))
@@ -46,7 +46,7 @@
       board)))
 
 (defn move! [player direction]
-  (dosync (alter board *move player direction)))
+  (send-off board *move player direction))
 
 (defn- *add-player [board player]
   (let [x (rand-free-space board)
@@ -54,7 +54,7 @@
     (assoc board x (assoc element :item player))))
 
 (defn add-player! [player]
-  (dosync (alter board *add-player player)))
+  (send-off board *add-player player))
 
 (defn stringify-board [board]
   (string/join (map #(or (:symbol (:item %1)) (:tile %1)) board)))
