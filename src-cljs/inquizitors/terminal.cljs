@@ -26,12 +26,12 @@
   (set-fill 180 180 180)
   (.fillText context msg x y))
 
-(defn draw-glyph [character x y]
+(defn draw-symbol [sym x y]
   (let [x-actual (* x-scale x)
         y-actual (* y-scale y)]
-    (text character x-actual y-actual)))
+    (text (name sym) x-actual y-actual)))
 
-(defn draw-screen [all-characters x-boundary]
+(defn draw-board [board board-x]
   (clear)
-    (doseq [i (range 0 (count all-characters))]
-      (draw-glyph (nth all-characters i) (mod i x-boundary) (.floor js/Math (/ i x-boundary)))))
+    (doseq [i (range 0 (count board))]
+      (draw-symbol (nth board i) (mod i board-x) (.floor js/Math (/ i board-x)))))

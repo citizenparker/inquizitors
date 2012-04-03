@@ -1,7 +1,8 @@
 (ns inquizitors.communication
   (:require [lamina.core :as lamina]
             [inquizitors.board :as board]
-            [inquizitors.players :as players]))
+            [inquizitors.players :as players]
+            [clojure.string :as string]))
 
 (def broadcast-channel (lamina/permanent-channel))
 
@@ -24,7 +25,7 @@
     (lamina/enqueue ch serialized-message)))
 
 (defn board-changed [new-board]
-  (broadcast :map-update {:world new-board :world-x board/board-x}))
+  (broadcast :map-update {:world (string/join new-board) :world-x board/board-x}))
 
 (defn respond-to [msg]
   (if (= :chat (msg :identifier))

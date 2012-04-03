@@ -6,7 +6,7 @@
 (defmethod sockets/respond-to :map-update [msg]
   (let [world ((msg :payload) :world)
         world-x ((msg :payload) :world-x)]
-    (terminal/draw-screen world world-x)))
+    (terminal/draw-board world world-x)))
 
 (def directions {37 :w 38 :n 39 :e 40 :s})
 

@@ -1,8 +1,11 @@
-(ns inquizitors.board)
+(ns inquizitors.board
+  (:require [clojure.string :as string]))
 
-(def board-x 4)
-(def board-y 3)
-(def board (agent (vec "#####d######")))
+(def board-x 100)
+(def board
+  (agent (vec (string/replace 
+                (slurp "resources/boards/600w-3.board")
+                #"\n" ""))))
 (def directions {:n (- board-x) :w -1 :s board-x :e 1})
 
 (defn inspect-board [board]
@@ -13,6 +16,7 @@
   (and
     (<= 0 x-old (dec (count board)))
     (<= 0 x-new (dec (count board)))
+    (= (board x-new) \#)
     (if (#{:e :w} direction)
       (= (int (/ x-old board-x)) (int (/ x-new board-x)))
       true)))
@@ -26,7 +30,7 @@
   (let [x1 (index-of board player)
         x2 (+ x1 (directions direction))]
     (if (valid-move? board direction x1 x2)
-      (let [new-board (assoc (assoc board x1 (nth board x2)) x2 player)]
+      (let [new-board (assoc board x1 (nth board x2) x2 player)]
         (callback new-board)
         new-board)
       board)))
