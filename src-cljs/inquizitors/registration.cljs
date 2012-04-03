@@ -13,7 +13,9 @@
 (defn start-registration []
   (dom/on-user-input send-registration event-scope))
 
-(defmethod sockets/respond-to :registered [_]
+(defmethod sockets/respond-to :registered [msg]
+  (dom/append-to-log (str "Welcome to Inquizitors, " (:name (:payload msg)) ". You are a " (name (:symbol (:payload msg)))))
+  (dom/remove-user-input-fn event-scope)
   (gamestate/signal-event :registered))
 
 ; this is a hilariously poor representation. However, as this is the only place it seems logical to have the client render a "view" in the terminal, I can live with it. Anyone with a better idea is still welcome to suggest it!

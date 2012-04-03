@@ -10,6 +10,10 @@
       (fn [e] (.preventDefault e)
               (f (user-input))))))
 
+(defn remove-user-input-fn [scope]
+  (-> ($ :#chatbox)
+    (.off (str "submit." scope))))
+
 (defn on-keypress [f scope]
   (-> ($ (.-body js/document))
     (.on (str "keydown." scope)
@@ -26,5 +30,8 @@
   (.val ($ :#message)))
 
 (defn append-to-log [msg]
-  (-> ($ :#log)
-    (.append (str msg "<br>"))))
+  (let [el ($ :#log)
+        obj (.get el 0)]
+    (-> el
+      (.append (str msg "<br>")))
+    (set! (.-scrollTop obj) (.-scrollHeight obj))))

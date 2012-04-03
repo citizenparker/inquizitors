@@ -20577,6 +20577,9 @@ inquizitors.dom.on_user_input = function on_user_input(f, scope) {
     return f.call(null, inquizitors.dom.user_input.call(null))
   })
 };
+inquizitors.dom.remove_user_input_fn = function remove_user_input_fn(scope) {
+  return jayq.core.$.call(null, "\ufdd0'#chatbox").off(cljs.core.str.call(null, "submit.", scope))
+};
 inquizitors.dom.on_keypress = function on_keypress(f, scope) {
   return jayq.core.$.call(null, document.body).on(cljs.core.str.call(null, "keydown.", scope), function(e) {
     if(cljs.core.truth_(f.call(null, e.keyCode))) {
@@ -20593,7 +20596,10 @@ inquizitors.dom.user_input = function user_input() {
   return jayq.core.$.call(null, "\ufdd0'#message").val()
 };
 inquizitors.dom.append_to_log = function append_to_log(msg) {
-  return jayq.core.$.call(null, "\ufdd0'#log").append(cljs.core.str.call(null, msg, "<br>"))
+  var el__3181 = jayq.core.$.call(null, "\ufdd0'#log");
+  var obj__3182 = el__3181.get(0);
+  el__3181.append(cljs.core.str.call(null, msg, "<br>"));
+  return obj__3182.scrollTop = obj__3182.scrollHeight
 };
 goog.provide("inquizitors.terminal");
 goog.require("cljs.core");
@@ -20616,8 +20622,8 @@ inquizitors.terminal.set_fill = function() {
     return set_fill__delegate.call(this, rgba)
   };
   set_fill.cljs$lang$maxFixedArity = 0;
-  set_fill.cljs$lang$applyTo = function(arglist__3108) {
-    var rgba = cljs.core.seq(arglist__3108);
+  set_fill.cljs$lang$applyTo = function(arglist__3157) {
+    var rgba = cljs.core.seq(arglist__3157);
     return set_fill__delegate.call(this, rgba)
   };
   return set_fill
@@ -20627,19 +20633,19 @@ inquizitors.terminal.rect = function rect(x, y, width, height) {
 };
 inquizitors.terminal.clear = function() {
   var clear = null;
-  var clear__3109 = function() {
+  var clear__3158 = function() {
     return clear.call(null, 0, 0, inquizitors.terminal.width, inquizitors.terminal.height)
   };
-  var clear__3110 = function(x, y, width, height) {
+  var clear__3159 = function(x, y, width, height) {
     inquizitors.terminal.set_fill.call(null, 0, 0, 0);
     return inquizitors.terminal.rect.call(null, x, y, width, height)
   };
   clear = function(x, y, width, height) {
     switch(arguments.length) {
       case 0:
-        return clear__3109.call(this);
+        return clear__3158.call(this);
       case 4:
-        return clear__3110.call(this, x, y, width, height)
+        return clear__3159.call(this, x, y, width, height)
     }
     throw"Invalid arity: " + arguments.length;
   };
@@ -20652,25 +20658,25 @@ inquizitors.terminal.text = function text(msg, x, y) {
   return inquizitors.terminal.context.fillText(msg, x, y)
 };
 inquizitors.terminal.draw_symbol = function draw_symbol(sym, x, y) {
-  var x_actual__3112 = inquizitors.terminal.x_scale * x;
-  var y_actual__3113 = inquizitors.terminal.y_scale * y;
-  return inquizitors.terminal.text.call(null, cljs.core.name.call(null, sym), x_actual__3112, y_actual__3113)
+  var x_actual__3161 = inquizitors.terminal.x_scale * x;
+  var y_actual__3162 = inquizitors.terminal.y_scale * y;
+  return inquizitors.terminal.text.call(null, cljs.core.name.call(null, sym), x_actual__3161, y_actual__3162)
 };
 inquizitors.terminal.draw_board = function draw_board(board, board_x) {
   inquizitors.terminal.clear.call(null);
-  var G__3114__3115 = cljs.core.seq.call(null, cljs.core.range.call(null, 0, cljs.core.count.call(null, board)));
-  if(cljs.core.truth_(G__3114__3115)) {
-    var i__3116 = cljs.core.first.call(null, G__3114__3115);
-    var G__3114__3117 = G__3114__3115;
+  var G__3163__3164 = cljs.core.seq.call(null, cljs.core.range.call(null, 0, cljs.core.count.call(null, board)));
+  if(cljs.core.truth_(G__3163__3164)) {
+    var i__3165 = cljs.core.first.call(null, G__3163__3164);
+    var G__3163__3166 = G__3163__3164;
     while(true) {
-      inquizitors.terminal.draw_symbol.call(null, cljs.core.nth.call(null, board, i__3116), i__3116 % board_x, Math.floor(i__3116 / board_x));
-      var temp__3698__auto____3118 = cljs.core.next.call(null, G__3114__3117);
-      if(cljs.core.truth_(temp__3698__auto____3118)) {
-        var G__3114__3119 = temp__3698__auto____3118;
-        var G__3120 = cljs.core.first.call(null, G__3114__3119);
-        var G__3121 = G__3114__3119;
-        i__3116 = G__3120;
-        G__3114__3117 = G__3121;
+      inquizitors.terminal.draw_symbol.call(null, cljs.core.nth.call(null, board, i__3165), i__3165 % board_x, Math.floor(i__3165 / board_x));
+      var temp__3698__auto____3167 = cljs.core.next.call(null, G__3163__3166);
+      if(cljs.core.truth_(temp__3698__auto____3167)) {
+        var G__3163__3168 = temp__3698__auto____3167;
+        var G__3169 = cljs.core.first.call(null, G__3163__3168);
+        var G__3170 = G__3163__3168;
+        i__3165 = G__3169;
+        G__3163__3166 = G__3170;
         continue
       }else {
         return null
@@ -20721,16 +20727,16 @@ goog.require("inquizitors.dom");
 goog.require("inquizitors.sockets");
 goog.require("inquizitors.terminal");
 cljs.core._add_method.call(null, inquizitors.sockets.respond_to, "\ufdd0'map-update", function(msg) {
-  var world__3122 = msg.call(null, "\ufdd0'payload").call(null, "\ufdd0'world");
-  var world_x__3123 = msg.call(null, "\ufdd0'payload").call(null, "\ufdd0'world-x");
-  return inquizitors.terminal.draw_board.call(null, world__3122, world_x__3123)
+  var world__3153 = msg.call(null, "\ufdd0'payload").call(null, "\ufdd0'world");
+  var world_x__3154 = msg.call(null, "\ufdd0'payload").call(null, "\ufdd0'world-x");
+  return inquizitors.terminal.draw_board.call(null, world__3153, world_x__3154)
 });
 inquizitors.movement.directions = cljs.core.HashMap.fromArrays([37, 38, 39, 40], ["\ufdd0'w", "\ufdd0'n", "\ufdd0'e", "\ufdd0's"]);
 inquizitors.movement.process_keypress = function process_keypress(keypress) {
-  var temp__3698__auto____3124 = inquizitors.movement.directions.call(null, keypress);
-  if(cljs.core.truth_(temp__3698__auto____3124)) {
-    var direction__3125 = temp__3698__auto____3124;
-    inquizitors.sockets.send.call(null, "\ufdd0'movement", direction__3125);
+  var temp__3698__auto____3155 = inquizitors.movement.directions.call(null, keypress);
+  if(cljs.core.truth_(temp__3698__auto____3155)) {
+    var direction__3156 = temp__3698__auto____3155;
+    inquizitors.sockets.send.call(null, "\ufdd0'movement", direction__3156);
     return true
   }else {
     return null
@@ -20749,11 +20755,11 @@ inquizitors.chat.send_chat = function send_chat(msg) {
   inquizitors.sockets.send.call(null, "\ufdd0'chat", msg);
   return inquizitors.dom.clear_user_input.call(null)
 };
-cljs.core._add_method.call(null, inquizitors.sockets.respond_to, "\ufdd0'chat", function(p__3296) {
-  var map__3297__3298 = p__3296;
-  var map__3297__3299 = cljs.core.truth_(cljs.core.seq_QMARK_.call(null, map__3297__3298)) ? cljs.core.apply.call(null, cljs.core.hash_map, map__3297__3298) : map__3297__3298;
-  var payload__3300 = cljs.core.get.call(null, map__3297__3299, "\ufdd0'payload");
-  return inquizitors.dom.append_to_log.call(null, payload__3300)
+cljs.core._add_method.call(null, inquizitors.sockets.respond_to, "\ufdd0'chat", function(p__3134) {
+  var map__3135__3136 = p__3134;
+  var map__3135__3137 = cljs.core.truth_(cljs.core.seq_QMARK_.call(null, map__3135__3136)) ? cljs.core.apply.call(null, cljs.core.hash_map, map__3135__3136) : map__3135__3136;
+  var payload__3138 = cljs.core.get.call(null, map__3135__3137, "\ufdd0'payload");
+  return inquizitors.dom.append_to_log.call(null, payload__3138)
 });
 inquizitors.chat.start_chat = function start_chat() {
   return inquizitors.dom.on_user_input.call(null, inquizitors.chat.send_chat, inquizitors.chat.event_scope)
@@ -20763,30 +20769,30 @@ goog.require("cljs.core");
 goog.require("inquizitors.dom");
 inquizitors.gamestate.transitions = cljs.core.Vector.fromArray([cljs.core.ObjMap.fromObject(["\ufdd0'event", "\ufdd0'to-state"], {"\ufdd0'event":"\ufdd0'started", "\ufdd0'to-state":"\ufdd0'initializing"}), cljs.core.ObjMap.fromObject(["\ufdd0'event", "\ufdd0'to-state"], {"\ufdd0'event":"\ufdd0'initialized", "\ufdd0'to-state":"\ufdd0'registering"}), cljs.core.ObjMap.fromObject(["\ufdd0'event", "\ufdd0'to-state"], {"\ufdd0'event":"\ufdd0'registered", "\ufdd0'to-state":"\ufdd0'playing"})]);
 inquizitors.gamestate.on_state_entered = function() {
-  var method_table__569__auto____3033 = cljs.core.atom.call(null, cljs.core.ObjMap.fromObject([], {}));
-  var prefer_table__570__auto____3034 = cljs.core.atom.call(null, cljs.core.ObjMap.fromObject([], {}));
-  var method_cache__571__auto____3035 = cljs.core.atom.call(null, cljs.core.ObjMap.fromObject([], {}));
-  var cached_hierarchy__572__auto____3036 = cljs.core.atom.call(null, cljs.core.ObjMap.fromObject([], {}));
-  var hierarchy__573__auto____3037 = cljs.core.get.call(null, cljs.core.ObjMap.fromObject([], {}), "\ufdd0'hierarchy", cljs.core.global_hierarchy);
-  return new cljs.core.MultiFn("on-state-entered", cljs.core.identity, "\ufdd0'default", hierarchy__573__auto____3037, method_table__569__auto____3033, prefer_table__570__auto____3034, method_cache__571__auto____3035, cached_hierarchy__572__auto____3036)
+  var method_table__569__auto____3140 = cljs.core.atom.call(null, cljs.core.ObjMap.fromObject([], {}));
+  var prefer_table__570__auto____3141 = cljs.core.atom.call(null, cljs.core.ObjMap.fromObject([], {}));
+  var method_cache__571__auto____3142 = cljs.core.atom.call(null, cljs.core.ObjMap.fromObject([], {}));
+  var cached_hierarchy__572__auto____3143 = cljs.core.atom.call(null, cljs.core.ObjMap.fromObject([], {}));
+  var hierarchy__573__auto____3144 = cljs.core.get.call(null, cljs.core.ObjMap.fromObject([], {}), "\ufdd0'hierarchy", cljs.core.global_hierarchy);
+  return new cljs.core.MultiFn("on-state-entered", cljs.core.identity, "\ufdd0'default", hierarchy__573__auto____3144, method_table__569__auto____3140, prefer_table__570__auto____3141, method_cache__571__auto____3142, cached_hierarchy__572__auto____3143)
 }();
 inquizitors.gamestate.signal_event = function signal_event(event_type) {
   console.log(cljs.core.str.call(null, "Event: ", cljs.core.pr_str.call(null, event_type)));
-  var G__3038__3039 = cljs.core.seq.call(null, cljs.core.filter.call(null, function(p1__3032_SHARP_) {
-    return cljs.core._EQ_.call(null, "\ufdd0'event".call(null, p1__3032_SHARP_), event_type)
+  var G__3145__3146 = cljs.core.seq.call(null, cljs.core.filter.call(null, function(p1__3139_SHARP_) {
+    return cljs.core._EQ_.call(null, "\ufdd0'event".call(null, p1__3139_SHARP_), event_type)
   }, inquizitors.gamestate.transitions));
-  if(cljs.core.truth_(G__3038__3039)) {
-    var event__3040 = cljs.core.first.call(null, G__3038__3039);
-    var G__3038__3041 = G__3038__3039;
+  if(cljs.core.truth_(G__3145__3146)) {
+    var event__3147 = cljs.core.first.call(null, G__3145__3146);
+    var G__3145__3148 = G__3145__3146;
     while(true) {
-      inquizitors.gamestate.on_state_entered.call(null, event__3040.call(null, "\ufdd0'to-state"));
-      var temp__3698__auto____3042 = cljs.core.next.call(null, G__3038__3041);
-      if(cljs.core.truth_(temp__3698__auto____3042)) {
-        var G__3038__3043 = temp__3698__auto____3042;
-        var G__3044 = cljs.core.first.call(null, G__3038__3043);
-        var G__3045 = G__3038__3043;
-        event__3040 = G__3044;
-        G__3038__3041 = G__3045;
+      inquizitors.gamestate.on_state_entered.call(null, event__3147.call(null, "\ufdd0'to-state"));
+      var temp__3698__auto____3149 = cljs.core.next.call(null, G__3145__3148);
+      if(cljs.core.truth_(temp__3698__auto____3149)) {
+        var G__3145__3150 = temp__3698__auto____3149;
+        var G__3151 = cljs.core.first.call(null, G__3145__3150);
+        var G__3152 = G__3145__3150;
+        event__3147 = G__3151;
+        G__3145__3148 = G__3152;
         continue
       }else {
         return null
@@ -20814,7 +20820,9 @@ inquizitors.registration.send_registration = function send_registration(name) {
 inquizitors.registration.start_registration = function start_registration() {
   return inquizitors.dom.on_user_input.call(null, inquizitors.registration.send_registration, inquizitors.registration.event_scope)
 };
-cljs.core._add_method.call(null, inquizitors.sockets.respond_to, "\ufdd0'registered", function(_) {
+cljs.core._add_method.call(null, inquizitors.sockets.respond_to, "\ufdd0'registered", function(msg) {
+  inquizitors.dom.append_to_log.call(null, cljs.core.str.call(null, "Welcome to Inquizitors, ", "\ufdd0'name".call(null, "\ufdd0'payload".call(null, msg)), ". You are a ", cljs.core.name.call(null, "\ufdd0'symbol".call(null, "\ufdd0'payload".call(null, msg)))));
+  inquizitors.dom.remove_user_input_fn.call(null, inquizitors.registration.event_scope);
   return inquizitors.gamestate.signal_event.call(null, "\ufdd0'registered")
 });
 inquizitors.registration.intro_text = '                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    __    __   __    ______    __  __    __    ______    __    ______   ______    ______    ______    /\\ \\  /\\ "-.\\ \\  /\\  __ \\  /\\ \\/\\ \\  /\\ \\  /\\___  \\  /\\ \\  /\\__  _\\ /\\  __ \\  /\\  == \\  /\\  ___\\   \\ \\ \\ \\ \\ \\-.  \\ \\ \\ \\/\\_\\ \\ \\ \\_\\ \\ \\ \\ \\ \\/_/  /__ \\ \\ \\ \\/_/\\ \\/ \\ \\ \\/\\ \\ \\ \\  __<  \\ \\___  \\   \\ \\_\\ \\ \\_\\\\"\\_\\ \\ \\___\\_\\ \\ \\_____\\ \\ \\_\\  /\\_____\\ \\ \\_\\   \\ \\_\\  \\ \\_____\\ \\ \\_\\ \\_\\ \\/\\_____\\   \\/_/  \\/_/ \\/_/  \\/___/_/  \\/_____/  \\/_/  \\/_____/  \\/_/    \\/_/   \\/_____/  \\/_/ /_/  \\/_____/                                                                                                                                                                                                                                                                                                                          IN THE GRIM DARKNESS OF THE FAR FUTURE, THERE IS ONLY TRIVIA.                                                                                                                                                                                                                                                          PLEASE ENTER YOUR NAME BELOW TO BEGIN.                        ';
