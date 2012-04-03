@@ -10,7 +10,7 @@
   "Sends a message to all known players"
   [identifier message]
   (let [serialized-message (pr-str {:identifier identifier :payload message})]
-    (println (str "OUTBOUND: " serialized-message))
+    ;(println (str "OUTBOUND: " serialized-message))
     (lamina/enqueue broadcast-channel serialized-message)))
 
 (def player-channels (ref {}))
@@ -24,14 +24,15 @@
     (println (str "OUTBOUND (" (:name player) "): " serialized-message))
     (lamina/enqueue ch serialized-message)))
 
-(defn board-changed [new-board]
-  (broadcast :map-update {:world (string/join new-board) :world-x board/board-x}))
-
 (defn respond-to [msg]
   (if (= :chat (msg :identifier))
     (broadcast :chat
                (str (msg :name) ": " (msg :payload)))
-    (board/move \d (msg :payload) board-changed)))
+    (board/move! (msg :player) (msg :payload))))
+
+(board/on-board-changed
+  (fn [new-board]
+    (broadcast :map-update {:world new-board :world-x board/board-x})))
 
 (defn responder-for-player [p]
   (fn [msg-str]
@@ -50,6 +51,7 @@
         player (players/player name)]
     (dosync
       (players/add! player)
+      (board/add-player! player)
       (alter player-channels assoc player ch))
     (lamina/receive-all ch (responder-for-player player))
     (send-to-player player :registered player)))
