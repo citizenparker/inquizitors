@@ -3,8 +3,10 @@
 
 (def web-socket (or (.-WebSocket js/window) (.-MozWebSocket js/window)))
 
+(def host (str "ws://" (-> (.-location js/window) .-hostname) ":8080"))
+
 (defn create-socket [f]
-  (let [ws (new web-socket "ws://50.116.34.10:8080")]
+  (let [ws (new web-socket host)]
     (set! (.-onmessage ws) (fn [e] (f (.-data e))))
     ws
     ))
