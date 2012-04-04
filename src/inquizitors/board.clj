@@ -49,12 +49,18 @@
   (send-off board *move player direction))
 
 (defn- *add-player [board player]
-  (let [x (rand-free-space board)
-        element (nth board x)]
-    (assoc board x (assoc element :item player))))
+  (let [x (rand-free-space board)]
+    (update-in board [x :item] (fn [_] player))))
 
 (defn add-player! [player]
   (send-off board *add-player player))
+
+(defn- *remove-player [board player]
+  (let [x (item-index-of board player)]
+    (update-in board [x :item] (fn [_] nil))))
+
+(defn remove-player! [player]
+  (send-off board *remove-player player))
 
 (defn stringify-board [board]
   (string/join (map #(or (:symbol (:item %1)) (:tile %1)) board)))

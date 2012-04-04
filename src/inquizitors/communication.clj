@@ -41,6 +41,14 @@
       (let [msg (read-string msg-str)]
         (respond-to (assoc msg :player p))))))
 
+(defn remover-for-player [p]
+  (fn []
+    (dosync
+      (players/remove! p)
+      (board/remove-player! p)
+      (alter player-channels dissoc p))
+    (broadcast :chat (str (:name p) " has disconnected. Booo!"))))
+
 (defn register!
   "Create a player for the new connection and wire it up appropriately"
   [ch msg-str]
@@ -54,5 +62,6 @@
       (board/add-player! player)
       (alter player-channels assoc player ch))
     (lamina/receive-all ch (responder-for-player player))
+    (lamina/on-closed ch (remover-for-player player))
     (send-to-player player :registered player)
     (broadcast :chat (str name " has joined!"))))
