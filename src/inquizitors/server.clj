@@ -18,10 +18,16 @@
    :headers {"content-type" "text/plain"}
    :body "Not found"})
 
+(defn wrap-to-index [handler]
+  (fn [req]
+    (handler
+      (update-in req [:uri] #(if (= "/" %) "/index.html" %)))))
+
 (def static-file-server
   (-> default-handler
       (resource/wrap-resource "public")
       (file-info/wrap-file-info)
+      (wrap-to-index)
       aleph/wrap-ring-handler))
 
 (defn -main []
